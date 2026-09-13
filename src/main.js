@@ -10,7 +10,6 @@ import {
   hideLoader,
   showLoadMoreButton,
   hideLoadMoreButton,
-  loadMoreBtn,
 } from './js/render-functions';
 
 // Описаний у документації
@@ -74,12 +73,14 @@ async function handleSubmit(event) {
     hideLoader();
   }
 }
+const loadMoreBtn = document.querySelector('.load-more-btn');
 
 loadMoreBtn.addEventListener('click', handleLoadMore);
 
 async function handleLoadMore(event) {
   try {
     hideLoadMoreButton();
+
     page++;
     showLoader();
     const data = await getImagesByQuery(currentQuery, page);
@@ -92,6 +93,13 @@ async function handleLoadMore(event) {
     }
 
     createGallery(data.hits);
+    const card = document.querySelector('.gallery-item');
+    const cardHeight = card.getBoundingClientRect().height;
+    window.scrollBy({
+      left: 0,
+      top: cardHeight * 2,
+      behavior: 'smooth',
+    });
 
     if (page >= totalPages) {
       iziToast.show({
@@ -100,15 +108,9 @@ async function handleLoadMore(event) {
         message: `We're sorry, but you've reached the end of search results.
 `,
       });
+      return;
     }
     showLoadMoreButton();
-    const card = document.querySelector('.gallery-item');
-    const cardHeight = card.getBoundingClientRect().height;
-    window.scrollBy({
-      left: 0,
-      top: cardHeight * 2,
-      behavior: 'smooth',
-    });
   } catch (error) {
     iziToast.error({
       position: 'topRight',
