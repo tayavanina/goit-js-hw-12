@@ -35,10 +35,8 @@ async function handleSubmit(event) {
     });
   }
 
-  if (inputWord !== currentQuery) {
-    page = 1;
-    currentQuery = inputWord;
-  }
+  page = 1;
+  currentQuery = inputWord;
 
   showLoader();
   try {
