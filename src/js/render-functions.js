@@ -19,7 +19,7 @@ const lightbox = new SimpleLightbox('.gallery a', {
   captionDelay: 250,
 });
 
-export async function createGallery(images) {
+export function createGallery(images) {
   gallery.insertAdjacentHTML(
     'beforeend',
     images
@@ -65,20 +65,20 @@ export async function createGallery(images) {
   lightbox.refresh();
 }
 
-export async function clearGallery() {
+export function clearGallery() {
   gallery.innerHTML = '';
 }
 
-export async function showLoader() {
+export function showLoader() {
   loader.classList.add('is-visible');
 }
-export async function hideLoader() {
+export function hideLoader() {
   loader.classList.remove('is-visible');
 }
 
-export async function showLoadMoreButton() {
+export function showLoadMoreButton() {
   loadMoreBtn.classList.add('is-visible');
 }
-export async function hideLoadMoreButton() {
+export function hideLoadMoreButton() {
   loadMoreBtn.classList.remove('is-visible');
 }

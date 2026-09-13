@@ -13,25 +13,16 @@ import 'izitoast/dist/css/iziToast.min.css';
 const myApiKey = '57567938-a750dc86e3e74b59c9f6f987b';
 const imagePerPage = 15;
 export async function getImagesByQuery(query, page) {
-  return axios
-    .get('https://pixabay.com/api/', {
-      params: {
-        key: myApiKey,
-        q: query,
-        page: page,
-        image_type: 'photo',
-        orientation: 'horizontal',
-        safesearch: true,
-        per_page: imagePerPage,
-      },
-    })
-    .then(response => response.data)
-    .catch(error => {
-      iziToast.error({
-        position: 'topRight',
-        title: `${error}`,
-        message: `${error.message}`,
-      });
-      throw error;
-    });
+  const response = await axios.get('https://pixabay.com/api/', {
+    params: {
+      key: myApiKey,
+      q: query,
+      page: page,
+      image_type: 'photo',
+      orientation: 'horizontal',
+      safesearch: true,
+      per_page: imagePerPage,
+    },
+  });
+  return response.data;
 }

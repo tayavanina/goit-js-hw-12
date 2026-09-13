@@ -23,7 +23,7 @@ let currentQuery = '';
 const form = document.querySelector('.form');
 form.addEventListener('submit', handleSubmit);
 
-function handleSubmit(event) {
+async function handleSubmit(event) {
   event.preventDefault();
   hideLoadMoreButton();
   clearGallery();
@@ -43,59 +43,58 @@ function handleSubmit(event) {
   }
 
   showLoader();
-  getImagesByQuery(inputWord, page)
-    .then(data => {
-      if (data.hits.length === 0) {
-        return iziToast.error({
-          position: 'topRight',
-          message:
-            'Sorry, there are no images matching your search query. Please try again!',
-        });
-      }
-
-      createGallery(data.hits);
-      totalPages = Math.ceil(data.totalHits / 15);
-
-      if (page < totalPages) {
-        showLoadMoreButton();
-      }
-    })
-    .catch(error => {
-      iziToast.error({
+  const data = await getImagesByQuery(inputWord, page);
+  try {
+    if (data.hits.length === 0) {
+      return iziToast.error({
         position: 'topRight',
-        title: `${error}`,
-        message: `${error.message}`,
+        message:
+          'Sorry, there are no images matching your search query. Please try again!',
       });
-    })
-    .finally(() => {
-      hideLoader();
+    }
+
+    createGallery(data.hits);
+    totalPages = Math.ceil(data.totalHits / 15);
+
+    if (page < totalPages) {
+      showLoadMoreButton();
+    }
+  } catch (error) {
+    iziToast.error({
+      position: 'topRight',
+      title: `${error}`,
+      message: `${error.message}`,
     });
+  } finally {
+    hideLoader();
+  }
 }
 
 loadMoreBtn.addEventListener('click', handleLoadMore);
 
 async function handleLoadMore(event) {
   try {
+    hideLoadMoreButton();
     page++;
-
+    showLoader();
     const data = await getImagesByQuery(currentQuery, page);
 
     createGallery(data.hits);
 
     if (page >= totalPages) {
-      hideLoadMoreButton();
-      iziToast.show({
+      return iziToast.show({
         position: 'topRight',
         title: 'The end',
         message: `We're sorry, but you've reached the end of search results.
 `,
       });
     }
+    showLoadMoreButton();
     const card = document.querySelector('.gallery-item');
     const cardHeight = card.getBoundingClientRect().height;
     window.scrollBy({
       left: 0,
-      top: cardHeight,
+      top: cardHeight * 2,
       behavior: 'smooth',
     });
   } catch (error) {
@@ -104,5 +103,7 @@ async function handleLoadMore(event) {
       title: `${error}`,
       message: `${error.message}`,
     });
+  } finally {
+    hideLoader();
   }
 }
