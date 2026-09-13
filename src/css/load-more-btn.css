@@ -1,0 +1,32 @@
+.load-more-btn {
+  border-radius: 8px;
+  padding: 8px 16px;
+  width: 125px;
+  height: 40px;
+  border-color: #4e75ff;
+  background: #4e75ff;
+  font-weight: 500;
+  font-size: 16px;
+
+  /* line-height: 24px; */
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  color: #fff;
+  outline: none;
+  box-shadow: none;
+  margin: 40px 0;
+  display: none;
+}
+
+.load-more-btn:hover {
+  background: #6c8cff;
+}
+
+.container-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.load-more-btn.is-visible {
+  display: block;
+}

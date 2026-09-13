@@ -11,26 +11,29 @@
 import SimpleLightbox from 'simplelightbox';
 // Додатковий імпорт стилів
 import 'simplelightbox/dist/simple-lightbox.min.css';
-const gallery = document.querySelector('.gallery');
+export const gallery = document.querySelector('.gallery');
 const loader = document.querySelector('.loader');
+export const loadMoreBtn = document.querySelector('.load-more-btn');
 const lightbox = new SimpleLightbox('.gallery a', {
   captionsData: 'alt',
   captionDelay: 250,
 });
 
-export function createGallery(images) {
-  gallery.innerHTML = images
-    .map(
-      ({
-        webformatURL,
-        largeImageURL,
-        tags,
-        likes,
-        views,
-        comments,
-        downloads,
-      }) =>
-        `<li class="gallery-item">
+export async function createGallery(images) {
+  gallery.insertAdjacentHTML(
+    'beforeend',
+    images
+      .map(
+        ({
+          webformatURL,
+          largeImageURL,
+          tags,
+          likes,
+          views,
+          comments,
+          downloads,
+        }) =>
+          `<li class="gallery-item">
         <a class="gallery-link" href="${largeImageURL}">
       <img class = "gallery-image" src="${webformatURL}" alt="${tags}" />
       </a>
@@ -56,18 +59,26 @@ export function createGallery(images) {
   </div>
 </div>
     </li>`
-    )
-    .join('');
+      )
+      .join('')
+  );
   lightbox.refresh();
 }
 
-export function clearGallery() {
+export async function clearGallery() {
   gallery.innerHTML = '';
 }
 
-export function showLoader() {
+export async function showLoader() {
   loader.classList.add('is-visible');
 }
-export function hideLoader() {
+export async function hideLoader() {
   loader.classList.remove('is-visible');
+}
+
+export async function showLoadMoreButton() {
+  loadMoreBtn.classList.add('is-visible');
+}
+export async function hideLoadMoreButton() {
+  loadMoreBtn.classList.remove('is-visible');
 }
