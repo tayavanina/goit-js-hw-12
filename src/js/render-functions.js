@@ -1,0 +1,73 @@
+// У файлі render-functions.js створи екземпляр SimpleLightbox для роботи з модальним вікном та зберігай функції
+// для відображення елементів інтерфейсу:
+
+// createGallery(images). Ця функція повинна приймати масив images, створювати HTML-розмітку для галереї,
+// додавати її в контейнер галереї та викликати метод екземпляра SimpleLightbox refresh(). Нічого не повертає.
+// clearGallery(). Ця функція нічого не приймає та повинна очищати вміст контейнера галереї. Нічого не повертає.
+// showLoader(). Ця функція нічого не приймає, повинна додавати клас для відображення лоадера. Нічого не повертає.
+// hideLoader(). Ця функція нічого не приймає, повинна прибирати клас для відображення лоадера. Нічого не повертає.
+
+// Описаний в документації
+import SimpleLightbox from 'simplelightbox';
+// Додатковий імпорт стилів
+import 'simplelightbox/dist/simple-lightbox.min.css';
+const gallery = document.querySelector('.gallery');
+const loader = document.querySelector('.loader');
+const lightbox = new SimpleLightbox('.gallery a', {
+  captionsData: 'alt',
+  captionDelay: 250,
+});
+
+export function createGallery(images) {
+  gallery.innerHTML = images
+    .map(
+      ({
+        webformatURL,
+        largeImageURL,
+        tags,
+        likes,
+        views,
+        comments,
+        downloads,
+      }) =>
+        `<li class="gallery-item">
+        <a class="gallery-link" href="${largeImageURL}">
+      <img class = "gallery-image" src="${webformatURL}" alt="${tags}" />
+      </a>
+      <div class="image-info">
+  <div>
+    <p class="info-title">Likes</p>
+    <p class="info-value">${likes}</p>
+  </div>
+
+  <div>
+    <p class="info-title">Views</p>
+    <p class="info-value">${views}</p>
+  </div>
+
+  <div>
+    <p class="info-title">Comments</p>
+    <p class="info-value">${comments}</p>
+  </div>
+
+  <div>
+    <p class="info-title">Downloads</p>
+    <p class="info-value">${downloads}</p>
+  </div>
+</div>
+    </li>`
+    )
+    .join('');
+  lightbox.refresh();
+}
+
+export function clearGallery() {
+  gallery.innerHTML = '';
+}
+
+export function showLoader() {
+  loader.classList.add('is-visible');
+}
+export function hideLoader() {
+  loader.classList.remove('is-visible');
+}
