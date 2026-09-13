@@ -11,7 +11,7 @@
 import SimpleLightbox from 'simplelightbox';
 // Додатковий імпорт стилів
 import 'simplelightbox/dist/simple-lightbox.min.css';
-export const gallery = document.querySelector('.gallery');
+const gallery = document.querySelector('.gallery');
 const loader = document.querySelector('.loader');
 export const loadMoreBtn = document.querySelector('.load-more-btn');
 const lightbox = new SimpleLightbox('.gallery a', {

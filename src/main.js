@@ -39,12 +39,12 @@ async function handleSubmit(event) {
   if (inputWord !== currentQuery) {
     page = 1;
     currentQuery = inputWord;
-    clearGallery();
   }
 
   showLoader();
-  const data = await getImagesByQuery(inputWord, page);
   try {
+    const data = await getImagesByQuery(inputWord, page);
+
     if (data.hits.length === 0) {
       return iziToast.error({
         position: 'topRight',
@@ -58,6 +58,11 @@ async function handleSubmit(event) {
 
     if (page < totalPages) {
       showLoadMoreButton();
+    } else {
+      iziToast.info({
+        position: 'topRight',
+        message: "We're sorry, but you've reached the end of search results.",
+      });
     }
   } catch (error) {
     iziToast.error({
@@ -78,11 +83,18 @@ async function handleLoadMore(event) {
     page++;
     showLoader();
     const data = await getImagesByQuery(currentQuery, page);
+    if (data.hits.length === 0) {
+      return iziToast.error({
+        position: 'topRight',
+        message:
+          'Sorry, there are no images matching your search query. Please try again!',
+      });
+    }
 
     createGallery(data.hits);
 
     if (page >= totalPages) {
-      return iziToast.show({
+      iziToast.show({
         position: 'topRight',
         title: 'The end',
         message: `We're sorry, but you've reached the end of search results.
